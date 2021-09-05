@@ -24,7 +24,7 @@ public abstract class BaseEntity {
 
     @CreatedDate
     @JsonIgnore
-    private final Instant createDate=Instant.now();
+    private Instant createDate=Instant.now();
 
     @LastModifiedDate
     @JsonIgnore

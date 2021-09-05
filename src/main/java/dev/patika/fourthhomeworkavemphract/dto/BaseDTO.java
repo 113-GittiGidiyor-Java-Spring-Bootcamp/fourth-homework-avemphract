@@ -1,4 +1,4 @@
 package dev.patika.fourthhomeworkavemphract.dto;
 
-public interface BaseDTO {
+public abstract class BaseDTO {
 }

@@ -8,10 +8,22 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CourseRepository extends CrudRepository<Course,Integer> {
-    @Query("DELETE FROM Course AS c WHERE c.courseName= ?1")
-    @Modifying
-    void deleteByName(String name);
 
     @Query("SELECT c FROM Course AS c WHERE c.courseName= ?1")
     Course getByName(String name);
+
+    @Query("SELECT " +
+            "CASE WHEN COUNT(c)>0 THEN TRUE ELSE FALSE END " +
+            "FROM Course AS c " +
+            "WHERE c.id = ?1")
+    boolean isIdExists(int id);
+
+    @Query("SELECT " +
+            "CASE WHEN COUNT(c)>0 THEN TRUE ELSE FALSE END " +
+            "FROM Course AS c " +
+            "WHERE c.courseCode = ?1")
+    boolean isCodeExists(String code);
+
+    @Query("SELECT c FROM Course AS c WHERE c.courseCode= ?1")
+    Course findByCourseCode(String courseCode);
 }

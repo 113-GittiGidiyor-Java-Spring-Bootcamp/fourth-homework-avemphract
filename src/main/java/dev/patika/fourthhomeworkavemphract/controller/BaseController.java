@@ -6,14 +6,14 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public interface BaseController<T extends BaseEntity,D extends BaseDTO> {
+public interface BaseController<T extends BaseDTO> {
     public ResponseEntity<List<T>> findAll();
 
     public ResponseEntity<T> findById(int id);
 
-    public ResponseEntity<T> save(D body);
+    public ResponseEntity<T> save(T body);
 
-    public ResponseEntity<T> update(D body);
+    public ResponseEntity<T> update(T body);
 
     public ResponseEntity<T> deleteById(int id);
 }

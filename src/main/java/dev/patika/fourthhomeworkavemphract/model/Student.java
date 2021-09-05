@@ -1,10 +1,7 @@
 package dev.patika.fourthhomeworkavemphract.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,7 +9,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@EqualsAndHashCode(exclude = {"courses"}, callSuper = false)
+@ToString(exclude = {"courses"})
+@EqualsAndHashCode(exclude = {"courses"}, callSuper = true)
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
 @AllArgsConstructor
@@ -23,6 +21,12 @@ public class Student extends BaseEntity {
     private String address;
     private String gender;
 
-    @ManyToMany(targetEntity = Course.class, mappedBy = "students", cascade = CascadeType.MERGE) @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "Student_Course_Pair",
+            joinColumns = {@JoinColumn(name = "student_id")},
+            inverseJoinColumns = {@JoinColumn(name = "course_id")}
+    )
+    @JsonIgnore
     private final Set<Course> courses=new HashSet<>();
 }

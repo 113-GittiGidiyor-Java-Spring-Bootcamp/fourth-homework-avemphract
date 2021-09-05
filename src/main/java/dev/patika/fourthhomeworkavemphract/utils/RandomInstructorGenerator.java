@@ -13,15 +13,23 @@ public class RandomInstructorGenerator {
     private static final String NUMBERS="0123456789";
     private static final List<String> ADDRESSES= Arrays.asList("İstanbul", "Ankara", "Bursa", "İzmir", "Antalya", "Diyarbakır", "Gaziantep", "Şanlıurfa", "Trabzon", "Adana", "Konya", "Manisa", "Muğla", "Siirt", "Ağrı", "Van", "Erzurum", "Sivas", "Elazığ", "Malatya", "Rize");
 
-
     private final Random random=new Random();
+
+    private final Set<Long> phones=new HashSet<>();
+
+    public void init(List<Instructor> instructors){
+        phones.clear();
+        instructors.forEach(i->phones.add(i.getPhoneNumber()));
+    }
 
     private int getHourlySalary(){
         return 20+random.nextInt(60);
     }
+
     private int getRegularSalary(){
         return 1500+random.nextInt(3000);
     }
+
     private String getAddress(){
         return ADDRESSES.get(random.nextInt(ADDRESSES.size()));
     }
@@ -47,6 +55,14 @@ public class RandomInstructorGenerator {
         result+=9*Math.pow(10,11);
         return result;
     }
+    private long getUniquePhoneNumber(){
+        long phoneNumber=-1;
+        while (phones.contains(phoneNumber) || phoneNumber==-1){
+            phoneNumber=getPhoneNumber();
+        }
+        phones.add(phoneNumber);
+        return phoneNumber;
+    }
 
     public Instructor generateInstructor(){
         Instructor instructor;
@@ -60,7 +76,7 @@ public class RandomInstructorGenerator {
         }
         instructor.setAddress(getAddress());
         instructor.setName(getName());
-        instructor.setPhoneNumber(getPhoneNumber());
+        instructor.setPhoneNumber(getUniquePhoneNumber());
         return instructor;
     }
 

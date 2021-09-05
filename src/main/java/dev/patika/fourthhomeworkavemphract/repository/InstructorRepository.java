@@ -18,14 +18,27 @@ public interface InstructorRepository extends CrudRepository<Instructor,Integer>
     void deleteByName(String name);
 
     @Query("SELECT i FROM Instructor AS i WHERE i.name= ?1")
-    Instructor getByName(String name);
+    Instructor findById(String name);
 
     @Query("SELECT i FROM RegularInstructor AS i ORDER BY i.constantSalary DESC ")
-    List<RegularInstructor> getThreeHighestSalaryRegularInstructor();
+    List<RegularInstructor> getRegularInstructorsSortFromSalary();
 
     @Query("SELECT i FROM GuestInstructor AS i ORDER BY i.hourlySalary DESC ")
-    List<GuestInstructor> getThreeHighestSalaryGuestInstructor();
+    List<GuestInstructor> getGuestInstructorsSortFromSalary();
 
 
+    @Query("SELECT " +
+            "CASE WHEN COUNT(i)>0 THEN TRUE ELSE FALSE END " +
+            "FROM Instructor AS i " +
+            "WHERE i.id = ?1")
+    boolean isIdExists(int id);
 
+    @Query("SELECT " +
+            "CASE WHEN COUNT(i)>0 THEN TRUE ELSE FALSE END " +
+            "FROM Instructor AS i " +
+            "WHERE i.phoneNumber = ?1")
+    boolean isPhoneNumberExists(long phoneNumber);
+
+    @Query("SELECT i FROM Instructor AS i WHERE i.phoneNumber=?1")
+    Instructor findByPhoneNumber(long phoneNumber);
 }

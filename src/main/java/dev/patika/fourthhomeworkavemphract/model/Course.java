@@ -1,27 +1,26 @@
 package dev.patika.fourthhomeworkavemphract.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@EqualsAndHashCode(exclude = {"instructor","students"},callSuper = false)
+@ToString(exclude = {"instructor","students"})
+@EqualsAndHashCode(exclude = {"instructor","students"},callSuper = true)
 @Data @AllArgsConstructor @NoArgsConstructor
 public class Course extends BaseEntity {
     private String courseName;
     private String courseCode;
     private double credit;
     
-    @ManyToOne @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER) @JsonBackReference
     private Instructor instructor;
 
-    @ManyToMany(targetEntity = Student.class, cascade = CascadeType.MERGE) @JsonIgnore
+    @ManyToMany(mappedBy = "courses", cascade = CascadeType.ALL, fetch = FetchType.EAGER) @JsonIgnore
     private final Set<Student> students=new HashSet<>();
 
 }
